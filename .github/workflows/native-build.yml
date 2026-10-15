@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: ./repo check
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: Ghostty-macOS
           path: Ghostty_*.lplug4
