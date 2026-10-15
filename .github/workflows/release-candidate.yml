@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   release:
-    name: Validate, build and release macOS plugin
+    name: Validate, build and release plugin
     runs-on: macos-latest
     timeout-minutes: 30
     permissions:
@@ -37,7 +37,7 @@ jobs:
           set -euo pipefail
           case "$GITHUB_REF" in
             refs/heads/release/?*) ;;
-            *) echo 'Dispatch this workflow from a release/* branch.' >&2; exit 1 ;;
+            *) echo '::error::Choose a release/* branch in Run workflow. Create it from develop first; dispatching from develop does not publish a release.'; exit 1 ;;
           esac
       - uses: actions/checkout@v7
         with:
@@ -47,8 +47,14 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
-            8.0.x
-            10.0.x
+            8.x
+            10.x
+          dotnet-quality: ga
+          cache: true
+          cache-dependency-path: |
+            **/packages.lock.json
+            .config/dotnet-tools.json
+            global.json
       - name: Pin the dispatch commit and prepare version
         id: version
         shell: bash
