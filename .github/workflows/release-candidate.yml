@@ -27,21 +27,20 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.RELEASE_TOKEN || github.token }}
       GH_REPO: ${{ github.repository }}
-      RELEASE_BRANCH: ${{ github.ref_name }}
       DISPATCH_SHA: ${{ github.sha }}
       BUMP: ${{ inputs.version }}
     steps:
-      - name: Require a release branch
+      - name: Require develop
         shell: bash
         run: |
           set -euo pipefail
-          case "$GITHUB_REF" in
-            refs/heads/release/?*) ;;
-            *) echo '::error::Choose a release/* branch in Run workflow. Create it from develop first; dispatching from develop does not publish a release.'; exit 1 ;;
-          esac
+          if [ "$GITHUB_REF" != refs/heads/develop ]; then
+            echo '::error::Run Release from develop.'
+            exit 1
+          fi
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.ref_name }}
+          ref: develop
           fetch-depth: 0
           token: ${{ secrets.RELEASE_TOKEN || github.token }}
       - uses: actions/setup-dotnet@v6
@@ -55,37 +54,22 @@ jobs:
             **/packages.lock.json
             .config/dotnet-tools.json
             global.json
-      - name: Pin the dispatch commit and prepare version
+      - name: Prepare release from the dispatched develop commit
         id: version
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = "$DISPATCH_SHA"
-          test -z "$(git status --porcelain)"
-          ./repo release-version "$BUMP"
-          release_version="$(python3 -c 'import xml.etree.ElementTree as E; print(E.parse("src/GhosttyPlugin.csproj").getroot().find("PropertyGroup/Version").text)')"
-          tag="v$release_version"
-          if git show-ref --verify --quiet "refs/tags/$tag"; then
-            echo "Tag already exists: $tag" >&2
-            exit 1
-          fi
-          {
-            echo "version=$release_version"
-            echo "tag=$tag"
-            echo "package=Ghostty_$release_version.lplug4"
-          } >> "$GITHUB_OUTPUT"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add src/GhosttyPlugin.csproj src/package/metadata/LoupedeckPackage.yaml
-          git commit -m "chore: release $tag"
-      - name: Integrate production history before validation
-        shell: bash
-        run: |
-          set -euo pipefail
-          # main must be created and protected during first-production setup.
-          git show-ref --verify refs/remotes/origin/main
-          git merge --no-edit origin/main
-          echo "MAIN_SHA=$(git rev-parse origin/main)" >> "$GITHUB_ENV"
+          python3 tools/release/prepare.py "$BUMP" "$DISPATCH_SHA" > "$RUNNER_TEMP/release.json"
+          python3 - <<'PYTHON'
+          import json, os
+          from pathlib import Path
+          release = json.loads((Path(os.environ["RUNNER_TEMP"]) / "release.json").read_text())
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              for key in ("version", "tag", "package", "commit", "main_sha"):
+                  print(f"{key}={release[key]}", file=output)
+          PYTHON
       - name: Shared quality and packaging gate
         run: ./repo check
       - name: Prepare release assets
@@ -105,25 +89,27 @@ jobs:
             ${{ steps.version.outputs.package }}.sha256
             artifacts/coverage/
           if-no-files-found: error
-      - name: Publish validated branch HEAD and tag
+      - name: Publish validated production HEAD and tag
         env:
           RELEASE_TAG: ${{ steps.version.outputs.tag }}
+          RELEASE_COMMIT: ${{ steps.version.outputs.commit }}
+          MAIN_SHA: ${{ steps.version.outputs.main_sha }}
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git branch --show-current)" = "$RELEASE_BRANCH"
+          test "$(git rev-parse HEAD)" = "$RELEASE_COMMIT"
           test -z "$(git status --porcelain)"
-          remote_head="$(git ls-remote origin "refs/heads/$RELEASE_BRANCH" | cut -f1)"
-          test "$remote_head" = "$DISPATCH_SHA"
-          git tag -a "$RELEASE_TAG" -m "Release $RELEASE_TAG" HEAD
-          test "$(git rev-list -n 1 "$RELEASE_TAG")" = "$(git rev-parse HEAD)"
+          remote_develop="$(git ls-remote origin refs/heads/develop | cut -f1)"
+          test "$remote_develop" = "$DISPATCH_SHA"
           remote_main="$(git ls-remote origin refs/heads/main | cut -f1)"
           test "$remote_main" = "$MAIN_SHA"
-          git merge-base --is-ancestor "$MAIN_SHA" HEAD
-          # The release branch HEAD includes main and has passed the shared gate.
-          # Advance main directly, without a PR, and publish the same tagged HEAD.
-          # Branch protections must authorize this release identity; never disable them.
-          git push --atomic origin "HEAD:refs/heads/$RELEASE_BRANCH" "HEAD:refs/heads/main" "refs/tags/$RELEASE_TAG"
+          if [ -n "$MAIN_SHA" ]; then
+            git merge-base --is-ancestor "$MAIN_SHA" HEAD
+          fi
+          git tag -a "$RELEASE_TAG" -m "Release $RELEASE_TAG" HEAD
+          test "$(git rev-list -n 1 "$RELEASE_TAG")" = "$RELEASE_COMMIT"
+          # No develop push, release/* branch, or PR to main. Never disable protection.
+          git push --atomic origin "HEAD:refs/heads/main" "refs/tags/$RELEASE_TAG"
       - name: Create GitHub release
         env:
           RELEASE_TAG: ${{ steps.version.outputs.tag }}

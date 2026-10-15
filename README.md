@@ -66,9 +66,9 @@ Descriptions are translated too. English source strings are SDK translation keys
 
 ## Gitflow
 
-`develop` is the default/integration branch. Create `feature/*` branches from develop and merge code into develop only through a PR. The initial setup remains on `feature/initial-setup`; nothing has been pushed and no PR has been created.
+`develop` is the default/integration branch. Create `feature/*` branches from develop and merge code into develop only through a PR.
 
-Create `release/*` branches from develop for release stabilization and publication. Release fixes return to develop through PRs. Introduce `main` with the first production version and protect it before accepting changes. Reserve `hotfix/*` for production fixes and backport by PR. Releases must be created from a validated release branch. Creating PRs, pushing, and publishing remain explicit user actions.
+The automated Release workflow starts directly from develop; no release branch is needed. Production fixes return to develop through PRs. Introduce `main` with the first production version and protect it before accepting changes. Reserve `hotfix/*` for production fixes and backport by PR. Automated releases originate directly from a validated develop snapshot. Creating PRs, pushing, and publishing remain explicit user actions.
 
 ## Local testing and debugging
 
@@ -140,22 +140,22 @@ Copy uses Ghostty mixed formats, letting the receiving application choose a repr
 
 The **Release** workflow has one parameter: **Version** (`Major`, `Minor`, `Fix`, default `Fix`). Every release is stable and marked latest. There is no prerelease option. Signing and App Store controls do not apply to this Logitech plugin.
 
-After this workflow has entered `develop` through a PR, create a `release/*` branch from `develop`. In GitHub Actions, select **Release → Run workflow**, choose that release branch and the increment. Dispatching authorizes publication; the workflow rejects every other branch. GitHub requires the dispatch workflow to exist on the repository default branch before it can be run.
+In GitHub Actions, select **Release → Run workflow → develop** and choose Major, Minor, or Fix. The workflow releases directly from the dispatched `develop` snapshot. It does not require or create a `release/*` branch, and it never writes release/version commits directly into protected `develop`.
 
-Before the first production release, create and protect `main`. Its protection must permit the release automation identity to integrate validated releases directly, without requiring a PR to main. If the default GitHub Actions identity cannot do so, configure a dedicated `RELEASE_TOKEN` secret for an authorized release identity. The workflow honors protection and never disables it. This is an explicit exception for release automation; changes into `develop` still require a PR.
+The version base is the greater of the source version and existing stable `vX.Y.Z` tags. Fix increments the patch, Minor increments the minor and resets patch, and Major increments major and resets minor/patch. This lets repeated releases advance even when develop's source version has not changed.
 
-The workflow synchronizes the assembly and Logitech versions, commits the bump on the release branch, merges existing `main` history into that branch, and runs `./repo check` on the resulting commit. After validation, it atomically advances the release branch and `main` to that same HEAD and pushes its `vX.Y.Z` tag. It rejects concurrent changes to either branch and never pushes to `develop`. No PR to main is created. Return release/version changes to `develop` through a PR.
+CI creates a local release snapshot containing develop's exact code plus the assembly/package version bump. Existing main history is preserved as the first parent, enabling a fast-forward production update without a PR. It runs `./repo check` on that exact release commit, then atomically updates `main` and publishes its annotated tag. For the first release it creates `main`; configure repository rules targeting main to permit the authorized release identity beforehand. If default workflow permissions cannot satisfy those rules, configure `RELEASE_TOKEN`. The workflow never disables protection and rejects concurrent develop/main changes. Production changes must enter develop before release because develop is the authoritative release source.
 
 The GitHub release contains `Ghostty_X.Y.Z.lplug4` and its SHA-256 checksum, with generated release notes. Build artifacts also include coverage. It does not submit to Logitech Marketplace.
 
 For local preparation, run `./repo release-version Major`, `Minor`, or `Fix`, or use VS Code's **Bump release version** task. This modifies the two version files locally and does not commit or publish. `./repo check` derives the package filename from their matching version. Python 3 is required for the version helper and its shared gate tests.
 
-Hosted release builds use the official pinned generator API compatibility fallback; they do not establish host freshness or replace native Logi Options+ acceptance. SDK reviews and native acceptance remain prerequisites for release. If publication fails after the atomic push, inspect the existing tag and artifact before recovery; rerunning against a changed branch is intentionally rejected.
+Hosted release builds use the official pinned generator API compatibility fallback; they do not establish host freshness or replace native Logi Options+ acceptance. SDK reviews and native acceptance remain prerequisites for release. If publication fails after the atomic push, inspect the existing tag and artifact before recovery; the next dispatch advances from existing stable tags rather than reusing the published version.
 
 Native acceptance: on 2026-10-15, the maintainer confirmed all current actions and the exported Actions Ring layout worked in Logi Options+, using Ghostty 1.3.1 and Plugin API 6.4.2.3414. The profile is bundled unchanged as `src/package/profiles/DefaultProfile72.lp5`. Automated compatibility builds remain separate from this manual acceptance.
 
 Dependency policy: GitHub Actions use stable major tags; NuGet references use stable major ranges (`18.*`, `2.*`, `4.*`, `10.*`) with committed lock files for reproducible CI. Refresh packages with `dotnet restore GhosttyPlugin.sln --force-evaluate`, review the lock changes, and run `./repo check`. The .NET SDK uses stable-only roll-forward within major 10; global.json and the local tool manifest retain concrete versions because their formats require them. Current NuGet package identities remain unchanged.
 
-All build workflows cache the NuGet global package directory through `actions/setup-dotnet`. Cache identity includes committed package lock files, the local tool manifest, and global.json. Tool restore still runs, and locked restore plus the shared gate still validate cached dependencies. The release job name is platform-neutral; current runtime/package support remains macOS-only. Dispatching Release from `develop` fails before checkout: create/select a `release/*` branch first, and configure protected `main` before the first production release.
+All build workflows cache the NuGet global package directory through `actions/setup-dotnet`. Cache identity includes committed package lock files, the local tool manifest, and global.json. Tool restore still runs, and locked restore plus the shared gate still validate cached dependencies. The release job name is platform-neutral; current runtime/package support remains macOS-only. Dispatch Release from `develop`; the workflow prepares and tags the release automatically.
 
 The Gitflow CI check also accepts repository-local Dependabot-authored `dependabot/*` PRs into `develop`; this fixes the earlier rejection of generated dependency branches. Human branches still follow feature/release/hotfix routing, and all dependency PRs must pass the full quality gate.
