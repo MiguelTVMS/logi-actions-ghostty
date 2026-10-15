@@ -3,7 +3,7 @@ name: Ghostty
 displayName: Ghostty
 description: Control Ghostty through Logitech Actions Ring and compatible MX devices.
 pluginFileName: GhosttyPlugin.dll
-version: 0.1.1
+version: 1.0.0
 author: João Miguel Tabosa Vaz Marques Silva
 copyright: Copyright © 2026 João Miguel Tabosa Vaz Marques Silva
 pluginFolderMac: bin
