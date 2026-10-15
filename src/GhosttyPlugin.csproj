@@ -5,7 +5,7 @@
     <Nullable>disable</Nullable>
     <RootNamespace>Loupedeck.GhosttyPlugin</RootNamespace>
     <AssemblyName>GhosttyPlugin</AssemblyName>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <BaseOutputPath>$(MSBuildThisFileDirectory)../bin/</BaseOutputPath>
     <OutputPath>$(BaseOutputPath)$(Configuration)/bin/</OutputPath>
