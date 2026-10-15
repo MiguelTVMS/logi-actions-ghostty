@@ -29,7 +29,13 @@ jobs:
         env:
           BASE_BRANCH: ${{ github.base_ref }}
           HEAD_BRANCH: ${{ github.head_ref }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}
         run: |
+          if [[ "$BASE_BRANCH" == develop && "$HEAD_BRANCH" == dependabot/* &&
+                "$PR_AUTHOR" == 'dependabot[bot]' && "$HEAD_REPOSITORY" == "$GITHUB_REPOSITORY" ]]; then
+            exit 0
+          fi
           case "$BASE_BRANCH:$HEAD_BRANCH" in
             develop:feature/*|develop:release/*|develop:hotfix/*|main:release/*|main:hotfix/*) ;;
             *) echo 'PR does not follow the Gitflow branch policy'; exit 1 ;;

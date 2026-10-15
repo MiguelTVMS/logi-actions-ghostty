@@ -26,3 +26,5 @@
 - Releases are always stable. The release dispatch has only a Major/Minor/Fix version increment. Merge validated release code into main automatically without creating a PR to main; return changes to develop through a PR.
 
 - Use latest stable GitHub Actions with major-only tags and NuGet PackageReference major-only stable ranges. Keep lock files committed and refresh them when updating dependencies. global.json and the dotnet tool manifest require concrete version values; keep them current and allow stable SDK roll-forward within the supported major. Never include prerelease dependency versions.
+
+- Automated Dependabot PRs may use dependabot/* branches into develop only when authored by dependabot[bot] from this repository. They still require the full shared quality gate and PR integration.
