@@ -19,6 +19,7 @@ class PrepareTests(unittest.TestCase):
         metadata.parent.mkdir(parents=True)
         project.write_text("<Project><PropertyGroup><Version>0.1.0</Version></PropertyGroup></Project>")
         metadata.write_text("version: 0.1.0\n")
+        (self.root / ".gitignore").write_text("artifacts/\n*.lplug4\n")
         git(self.root, "add", ".")
         git(self.root, "commit", "-m", "Initial")
         self.source = git(self.root, "rev-parse", "HEAD")
@@ -43,6 +44,20 @@ class PrepareTests(unittest.TestCase):
         self.assertEqual(git(self.root, "rev-parse", "HEAD^2"), self.source)
         self.assertEqual(git(self.root, "diff", "--name-only", self.source, "HEAD").splitlines(),
                          ["src/GhosttyPlugin.csproj", "src/package/metadata/LoupedeckPackage.yaml"])
+
+    def test_release_assets_do_not_dirty_validated_checkout(self):
+        import hashlib
+        prepare(self.root, "Fix", self.source)
+        package = self.root / "Ghostty_0.1.1.lplug4"
+        package.write_bytes(b"test-package")
+        checksum = self.root / "artifacts/release" / (package.name + ".sha256")
+        checksum.parent.mkdir(parents=True)
+        checksum.write_text(hashlib.sha256(package.read_bytes()).hexdigest() + "  " + package.name + "\n")
+        self.assertEqual(git(self.root, "status", "--porcelain"), "")
+        # A checksum beside the ignored package was the release failure.
+        misplaced = self.root / (package.name + ".sha256")
+        misplaced.write_text(checksum.read_text())
+        self.assertIn(misplaced.name, git(self.root, "status", "--porcelain"))
 
     def test_wrong_source_branch_and_dirty_tree_fail(self):
         with self.assertRaises(ValueError):
