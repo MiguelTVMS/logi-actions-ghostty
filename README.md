@@ -62,7 +62,7 @@ The initial supported languages are **English (US), en-US**, and **Portuguese (B
 | Open Settings | Abrir configurações |
 | Reload Settings | Recarregar configurações |
 
-Descriptions are translated too. English source strings are SDK translation keys, so keep both catalogs synchronized whenever UI strings change. The validation command discovers current command classes from the compiled plugin and verifies exact IDs, matching sources, nonempty targets, and SDK lookup results. Native plugin loading and visibility in Logi Options+ have been verified. The initial loading failure was caused by a missing ClientApplication subclass; the host requires exactly one even for a universal plugin. GhosttyApplication now provides that contract, with a regression test. Executing the Settings actions and testing debugger attachment remain pending. No Settings action was invoked during validation.
+Descriptions are translated too. English source strings are SDK translation keys, so keep both catalogs synchronized whenever UI strings change. The validation command discovers current command classes from the compiled plugin and verifies exact IDs, matching sources, nonempty targets, and SDK lookup results. Native plugin loading and visibility in Logi Options+ have been verified. The initial loading failure was caused by a missing ClientApplication subclass; the host requires exactly one even for a universal plugin. GhosttyApplication now provides that contract, with a regression test. The maintainer confirmed Settings actions work on 2026-10-15; debugger attachment acceptance remains separate.
 
 ## Gitflow
 
@@ -117,9 +117,9 @@ Window Management includes Split Left, Split Right, Split Up, Split Down, New Ta
 | Search | Find, Find Selection, Next Search Result, Previous Search Result |
 | Terminal | Open Scrollback in Editor |
 
-Font size changes use one-point increments. Find Selection requires selected text; result navigation requires an active search. Split navigation requires a neighboring pane. Scrollback opens a temporary text file through the default editor. All target the focused terminal in the front Ghostty window. New actions include icons and en-US/pt-BR translations; native device acceptance remains pending.
+Font size changes use one-point increments. Find Selection requires selected text; result navigation requires an active search. Split navigation requires a neighboring pane. Scrollback opens a temporary text file through the default editor. All target the focused terminal in the front Ghostty window. New actions include icons and en-US/pt-BR translations; the maintainer confirmed native device acceptance on 2026-10-15.
 
-**Toggle Secure Keyboard Entry** is in Terminal. It runs Ghostty `toggle_secure_input`, affecting the entire Ghostty application, and persists across Ghostty restarts until toggled off. Ghostty temporarily releases active secure input while it is in the background. It requires an open Ghostty terminal. This command toggles the native state; the button does not display an on/off indicator. Native acceptance of this security setting is pending.
+**Toggle Secure Keyboard Entry** is in Terminal. It runs Ghostty `toggle_secure_input`, affecting the entire Ghostty application, and persists across Ghostty restarts until toggled off. Ghostty temporarily releases active secure input while it is in the background. It requires an open Ghostty terminal. This command toggles the native state; the button does not display an on/off indicator. The maintainer confirmed native acceptance on 2026-10-15.
 
 ## Clipboard actions
 
@@ -134,17 +134,19 @@ Font size changes use one-point increments. Find Selection requires selected tex
 | Paste | Paste from the system clipboard using Ghostty paste handling |
 | Paste from Selection | Paste from Ghostty selection clipboard |
 
-Copy uses Ghostty mixed formats, letting the receiving application choose a representation. Plain Text removes formatting; HTML retains rich formatting; Terminal Formatting includes VT escape sequences. Copy variants require selected text. Copy URL requires a link under the terminal pointer; Copy Terminal Title requires a nonempty terminal title. Paste from Selection uses Ghostty’s selection clipboard rather than an arbitrary system-wide text selection. Clipboard actions use native Ghostty handling, including configured paste protections, and require an open terminal. No clipboard contents are read or logged by the plugin. Native clipboard acceptance remains pending.
+Copy uses Ghostty mixed formats, letting the receiving application choose a representation. Plain Text removes formatting; HTML retains rich formatting; Terminal Formatting includes VT escape sequences. Copy variants require selected text. Copy URL requires a link under the terminal pointer; Copy Terminal Title requires a nonempty terminal title. Paste from Selection uses Ghostty’s selection clipboard rather than an arbitrary system-wide text selection. Clipboard actions use native Ghostty handling, including configured paste protections, and require an open terminal. No clipboard contents are read or logged by the plugin. The maintainer confirmed native acceptance on 2026-10-15.
 
 ## Release workflow
 
-The **Release** workflow uses the same relevant dispatch parameters as Speaker Volume Bridge: **Version** (`Major`, `Minor`, `Fix`, default `Fix`) and **Stable** (default unchecked). Signing and App Store controls do not apply to this Logitech plugin.
+The **Release** workflow has one parameter: **Version** (`Major`, `Minor`, `Fix`, default `Fix`). Every release is stable and marked latest. There is no prerelease option. Signing and App Store controls do not apply to this Logitech plugin.
 
-After this workflow has entered `develop` through a PR, create a `release/*` branch from `develop`. In GitHub Actions, select **Release → Run workflow**, choose that release branch, select the increment, and choose whether it is stable. Dispatching authorizes publication; the workflow rejects every other branch. GitHub requires the dispatch workflow to exist on the repository default branch before it can be run.
+After this workflow has entered `develop` through a PR, create a `release/*` branch from `develop`. In GitHub Actions, select **Release → Run workflow**, choose that release branch and the increment. Dispatching authorizes publication; the workflow rejects every other branch. GitHub requires the dispatch workflow to exist on the repository default branch before it can be run.
 
-The workflow synchronizes the C# assembly and Logitech package versions, creates a local version commit, and runs the same `./repo check` used by hooks and CI. Only after validation does it atomically push the release branch HEAD and its annotated tag. It checks that the remote branch still matches the dispatched commit and never pushes to `develop` or `main`. Return the version changes to `develop` by PR. The first production release still requires establishing and protecting `main` under the repository Gitflow policy.
+Before the first production release, create and protect `main`. Its protection must permit the release automation identity to integrate validated releases directly, without requiring a PR to main. If the default GitHub Actions identity cannot do so, configure a dedicated `RELEASE_TOKEN` secret for an authorized release identity. The workflow honors protection and never disables it. This is an explicit exception for release automation; changes into `develop` still require a PR.
 
-Stable creates `vX.Y.Z` and marks the GitHub release latest. Unchecked creates `vX.Y.Z-rc.RUN_NUMBER` as a prerelease, without changing latest. Each dispatch increments the numeric package version, including prereleases; Logitech package metadata remains numeric. The release contains `Ghostty_X.Y.Z.lplug4` and its SHA-256 checksum, with generated release notes. Build artifacts also include the coverage report. It does not submit to Logitech Marketplace.
+The workflow synchronizes the assembly and Logitech versions, commits the bump on the release branch, merges existing `main` history into that branch, and runs `./repo check` on the resulting commit. After validation, it atomically advances the release branch and `main` to that same HEAD and pushes its `vX.Y.Z` tag. It rejects concurrent changes to either branch and never pushes to `develop`. No PR to main is created. Return release/version changes to `develop` through a PR.
+
+The GitHub release contains `Ghostty_X.Y.Z.lplug4` and its SHA-256 checksum, with generated release notes. Build artifacts also include coverage. It does not submit to Logitech Marketplace.
 
 For local preparation, run `./repo release-version Major`, `Minor`, or `Fix`, or use VS Code's **Bump release version** task. This modifies the two version files locally and does not commit or publish. `./repo check` derives the package filename from their matching version. Python 3 is required for the version helper and its shared gate tests.
 
