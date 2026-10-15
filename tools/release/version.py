@@ -19,7 +19,7 @@ def bump_version(version, bump):
     return f"{major}.{minor}.{patch}"
 
 
-def update_version(root, bump):
+def update_version(root, bump, base_version=None):
     project = root / "src/GhosttyPlugin.csproj"
     metadata = root / "src/package/metadata/LoupedeckPackage.yaml"
     project_text, metadata_text = project.read_text(), metadata.read_text()
@@ -27,7 +27,7 @@ def update_version(root, bump):
     package_versions = re.findall(r"(?m)^version: (\S+)$", metadata_text)
     if len(project_versions) != 1 or package_versions != project_versions:
         raise ValueError("Assembly and package must have one matching version")
-    version = bump_version(project_versions[0], bump)
+    version = bump_version(base_version or project_versions[0], bump)
     # Validate both files before writing either one.
     project.write_text(project_text.replace(f"<Version>{project_versions[0]}</Version>", f"<Version>{version}</Version>"))
     metadata.write_text(re.sub(r"(?m)^version: \S+$", f"version: {version}", metadata_text))
