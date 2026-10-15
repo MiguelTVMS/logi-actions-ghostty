@@ -79,14 +79,15 @@ jobs:
         run: |
           set -euo pipefail
           test -s "$PACKAGE"
-          shasum -a 256 "$PACKAGE" > "$PACKAGE.sha256"
+          mkdir -p artifacts/release
+          shasum -a 256 "$PACKAGE" > "artifacts/release/$PACKAGE.sha256"
       - name: Upload validated build
         uses: actions/upload-artifact@v7
         with:
           name: Ghostty-${{ steps.version.outputs.tag }}-macOS
           path: |
             ${{ steps.version.outputs.package }}
-            ${{ steps.version.outputs.package }}.sha256
+            artifacts/release/${{ steps.version.outputs.package }}.sha256
             artifacts/coverage/
           if-no-files-found: error
       - name: Publish validated production HEAD and tag
@@ -98,7 +99,11 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$RELEASE_COMMIT"
-          test -z "$(git status --porcelain)"
+          if [ -n "$(git status --porcelain)" ]; then
+            git status --short
+            echo '::error::Release checkout changed after validation.'
+            exit 1
+          fi
           remote_develop="$(git ls-remote origin refs/heads/develop | cut -f1)"
           test "$remote_develop" = "$DISPATCH_SHA"
           remote_main="$(git ls-remote origin refs/heads/main | cut -f1)"
@@ -117,7 +122,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          gh release create "$RELEASE_TAG" "$PACKAGE" "$PACKAGE.sha256" \
+          gh release create "$RELEASE_TAG" "$PACKAGE" "artifacts/release/$PACKAGE.sha256" \
             --verify-tag --generate-notes --title "Ghostty Actions $RELEASE_TAG" --latest
       - name: Upload validation diagnostics
         if: failure()
