@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <RootNamespace>Loupedeck.GhosttyPlugin</RootNamespace>
+    <AssemblyName>GhosttyPlugin</AssemblyName>
+    <Version>0.1.0</Version>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <BaseOutputPath>$(MSBuildThisFileDirectory)../bin/</BaseOutputPath>
+    <OutputPath>$(BaseOutputPath)$(Configuration)/bin/</OutputPath>
+    <EnablePluginLink Condition="'$(EnablePluginLink)' == ''">false</EnablePluginLink>
+    <PluginLinkDir>$(HOME)/Library/Application Support/Logi/LogiPluginService/Plugins</PluginLinkDir>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PluginApi">
+      <HintPath>$(PluginApiDir)/PluginApi.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <None Include="package/**/*" CopyToOutputDirectory="Never" />
+  </ItemGroup>
+  <Target Name="CheckPluginApi" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(PluginApiDir)/PluginApi.dll')" Text="Install current Logi Options+ on macOS, or set PluginApiDir to the directory containing its PluginApi.dll." />
+  </Target>
+  <Target Name="CopyPackage" AfterTargets="Build">
+    <ItemGroup><PackageFiles Include="package/**/*" /></ItemGroup>
+    <Copy SourceFiles="@(PackageFiles)" DestinationFiles="@(PackageFiles->'$(BaseOutputPath)$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
+  <Target Name="LinkPlugin" AfterTargets="CopyPackage" Condition="'$(EnablePluginLink)' == 'true'">
+    <MakeDir Directories="$(PluginLinkDir)" />
+    <WriteLinesToFile File="$(PluginLinkDir)/GhosttyPlugin.link" Lines="$([System.IO.Path]::GetFullPath('$(BaseOutputPath)$(Configuration)/'))" Overwrite="true" />
+    <Exec Command="open loupedeck:plugin/Ghostty/reload" ContinueOnError="WarnAndContinue" />
+  </Target>
+  <Target Name="UnlinkPlugin">
+    <Delete Files="$(PluginLinkDir)/GhosttyPlugin.link" />
+  </Target>
+</Project>

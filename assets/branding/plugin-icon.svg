@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <title>Ghostty integration plugin</title>
+  <rect x="32" y="32" width="192" height="192" rx="40" fill="#149CFF"/>
+  <g transform="translate(32 32) scale(.75)" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M48 216V112a80 80 0 0 1 160 0v104l-27-20-27 20-26-20-26 20-27-20Z"/>
+    <ellipse cx="102" cy="116" rx="11" ry="16"/>
+    <ellipse cx="154" cy="116" rx="11" ry="16"/>
+  </g>
+</svg>

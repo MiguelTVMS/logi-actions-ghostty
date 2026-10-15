@@ -1,0 +1,193 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Restore Logitech tool",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "tool",
+        "restore"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Build plugin",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "GhosttyPlugin.sln"
+      ],
+      "group": "build",
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    },
+    {
+      "label": "Build and link plugin",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "GhosttyPlugin.sln",
+        "-p:EnablePluginLink=true"
+      ],
+      "problemMatcher": [
+        "$msCompile"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Watch and link plugin",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "watch",
+        "--project",
+        "src/GhosttyPlugin.csproj",
+        "build",
+        "-p:EnablePluginLink=true"
+      ],
+      "problemMatcher": [],
+      "isBackground": true
+    },
+    {
+      "label": "Release build",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "GhosttyPlugin.sln",
+        "-c",
+        "Release"
+      ],
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    },
+    {
+      "label": "Unlink plugin",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "msbuild",
+        "src/GhosttyPlugin.csproj",
+        "-t:UnlinkPlugin"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Validate everything",
+      "type": "process",
+      "command": "${workspaceFolder}/repo",
+      "args": [
+        "check"
+      ],
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    },
+    {
+      "label": "Run tests",
+      "type": "process",
+      "command": "${workspaceFolder}/repo",
+      "args": [
+        "test"
+      ],
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    },
+    {
+      "label": "Check coverage (90% minimum)",
+      "type": "process",
+      "command": "${workspaceFolder}/repo",
+      "args": [
+        "coverage"
+      ],
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    },
+    {
+      "label": "Check translations (100%)",
+      "type": "process",
+      "command": "${workspaceFolder}/repo",
+      "args": [
+        "translations"
+      ],
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    },
+    {
+      "label": "Enable Git hooks",
+      "type": "process",
+      "command": "${workspaceFolder}/repo",
+      "args": [
+        "hooks"
+      ],
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    },
+    {
+      "label": "Check action icons",
+      "type": "process",
+      "command": "${workspaceFolder}/repo",
+      "args": [
+        "icons"
+      ],
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    },
+    {
+      "label": "Copy exported default profile",
+      "type": "process",
+      "command": "${workspaceFolder}/repo",
+      "args": [
+        "profile",
+        "${input:profileExport}"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Bump release version",
+      "type": "process",
+      "command": "${workspaceFolder}/repo",
+      "args": [
+        "release-version",
+        "${input:releaseBump}"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "options": {
+    "env": {
+      "PATH": "${env:HOME}/.dotnet:${env:PATH}"
+    }
+  },
+  "inputs": [
+    {
+      "id": "profileExport",
+      "type": "promptString",
+      "description": "Absolute path of the Ghostty Actions Ring .lp5 export"
+    },
+    {
+      "id": "releaseBump",
+      "type": "pickString",
+      "description": "Version increment (updates assembly and package metadata locally)",
+      "options": [
+        "Major",
+        "Minor",
+        "Fix"
+      ],
+      "default": "Fix"
+    }
+  ]
+}

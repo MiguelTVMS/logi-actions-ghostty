@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <title>Outlined ghost</title>
+  <g transform="translate(16 16) scale(.875)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <g stroke="#149CFF" stroke-width="12">
+      <path d="M48 216V112a80 80 0 0 1 160 0v104l-27-20-27 20-26-20-26 20-27-20Z"/>
+      <ellipse cx="102" cy="116" rx="11" ry="16"/>
+      <ellipse cx="154" cy="116" rx="11" ry="16"/>
+    </g>
+    <g stroke="#FFFFFF" stroke-width="4">
+      <path d="M48 216V112a80 80 0 0 1 160 0v104l-27-20-27 20-26-20-26 20-27-20Z"/>
+      <ellipse cx="102" cy="116" rx="11" ry="16"/>
+      <ellipse cx="154" cy="116" rx="11" ry="16"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,18 @@
+type: plugin4
+name: Ghostty
+displayName: Ghostty
+description: Control Ghostty through Logitech Actions Ring and compatible MX devices.
+pluginFileName: GhosttyPlugin.dll
+version: 0.1.0
+author: João Miguel Tabosa Vaz Marques Silva
+copyright: Copyright © 2026 João Miguel Tabosa Vaz Marques Silva
+pluginFolderMac: bin
+supportedDevices:
+  - LoupedeckCtFamily
+pluginCapabilities:
+  - HasApplication
+minimumLoupedeckVersion: 6.4
+license: MIT
+licenseUrl: https://opensource.org/licenses/MIT
+supportPageUrl: https://github.com/migueltvms/logi-actions-ghostty/issues
+homePageUrl: https://github.com/migueltvms/logi-actions-ghostty
