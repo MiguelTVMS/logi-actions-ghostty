@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <PluginApiDir Condition="'$(PluginApiDir)' == '' and Exists('/Applications/Utilities/LogiPluginService.app/Contents/MonoBundle/PluginApi.dll')">/Applications/Utilities/LogiPluginService.app/Contents/MonoBundle</PluginApiDir>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+</Project>

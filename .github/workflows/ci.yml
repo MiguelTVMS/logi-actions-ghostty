@@ -1,0 +1,39 @@
+name: Quality
+on:
+  push:
+    branches: ['feature/**', 'release/**', 'hotfix/**']
+  pull_request:
+    branches: [develop, main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  quality:
+    name: Quality gate
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+      - name: Validate Gitflow PR route
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_BRANCH: ${{ github.base_ref }}
+          HEAD_BRANCH: ${{ github.head_ref }}
+        run: |
+          case "$BASE_BRANCH:$HEAD_BRANCH" in
+            develop:feature/*|develop:release/*|develop:hotfix/*|main:release/*|main:hotfix/*) ;;
+            *) echo 'PR does not follow the Gitflow branch policy'; exit 1 ;;
+          esac
+      - run: ./repo check
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: quality-results
+          path: |
+            artifacts/coverage/
+            Ghostty_*.lplug4
+          if-no-files-found: ignore

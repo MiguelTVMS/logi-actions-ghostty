@@ -1,0 +1,135 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version
+        required: true
+        default: Fix
+        type: choice
+        options: [Major, Minor, Fix]
+      stable:
+        description: Stable
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ghostty-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Validate, build and release macOS plugin
+    runs-on: macos-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      RELEASE_BRANCH: ${{ github.ref_name }}
+      DISPATCH_SHA: ${{ github.sha }}
+      BUMP: ${{ inputs.version }}
+      STABLE: ${{ inputs.stable }}
+    steps:
+      - name: Require a release branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "$GITHUB_REF" in
+            refs/heads/release/?*) ;;
+            *) echo 'Dispatch this workflow from a release/* branch.' >&2; exit 1 ;;
+          esac
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+      - name: Pin the dispatch commit and prepare version
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$DISPATCH_SHA"
+          test -z "$(git status --porcelain)"
+          ./repo release-version "$BUMP"
+          release_version="$(python3 -c 'import xml.etree.ElementTree as E; print(E.parse("src/GhosttyPlugin.csproj").getroot().find("PropertyGroup/Version").text)')"
+          tag="v$release_version"
+          if [ "$STABLE" != true ]; then
+            tag="$tag-rc.$GITHUB_RUN_NUMBER"
+          fi
+          if git show-ref --verify --quiet "refs/tags/$tag"; then
+            echo "Tag already exists: $tag" >&2
+            exit 1
+          fi
+          {
+            echo "version=$release_version"
+            echo "tag=$tag"
+            echo "package=Ghostty_$release_version.lplug4"
+          } >> "$GITHUB_OUTPUT"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/GhosttyPlugin.csproj src/package/metadata/LoupedeckPackage.yaml
+          git commit -m "chore: release $tag"
+      - name: Shared quality and packaging gate
+        run: ./repo check
+      - name: Prepare release assets
+        env:
+          PACKAGE: ${{ steps.version.outputs.package }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "$PACKAGE"
+          shasum -a 256 "$PACKAGE" > "$PACKAGE.sha256"
+      - name: Upload validated build
+        uses: actions/upload-artifact@v4
+        with:
+          name: Ghostty-${{ steps.version.outputs.tag }}-macOS
+          path: |
+            ${{ steps.version.outputs.package }}
+            ${{ steps.version.outputs.package }}.sha256
+            artifacts/coverage/
+          if-no-files-found: error
+      - name: Publish validated branch HEAD and tag
+        env:
+          RELEASE_TAG: ${{ steps.version.outputs.tag }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git branch --show-current)" = "$RELEASE_BRANCH"
+          test -z "$(git status --porcelain)"
+          remote_head="$(git ls-remote origin "refs/heads/$RELEASE_BRANCH" | cut -f1)"
+          test "$remote_head" = "$DISPATCH_SHA"
+          git tag -a "$RELEASE_TAG" -m "Release $RELEASE_TAG" HEAD
+          test "$(git rev-list -n 1 "$RELEASE_TAG")" = "$(git rev-parse HEAD)"
+          # Atomic, fast-forward publication; never update develop or main here.
+          git push --atomic origin "HEAD:refs/heads/$RELEASE_BRANCH" "refs/tags/$RELEASE_TAG"
+      - name: Create GitHub release
+        env:
+          RELEASE_TAG: ${{ steps.version.outputs.tag }}
+          PACKAGE: ${{ steps.version.outputs.package }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          flags=(--prerelease --latest=false)
+          if [ "$STABLE" = true ]; then
+            flags=(--latest)
+          fi
+          gh release create "$RELEASE_TAG" "$PACKAGE" "$PACKAGE.sha256" \
+            --verify-tag --generate-notes --title "Ghostty Actions $RELEASE_TAG" "${flags[@]}"
+      - name: Upload validation diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-validation-${{ github.run_id }}
+          path: artifacts/coverage/
+          if-no-files-found: ignore

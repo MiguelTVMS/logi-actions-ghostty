@@ -1,0 +1,11 @@
+**/bin/
+**/obj/
+node_modules/
+dist/
+artifacts/
+*.lplug4
+*.csproj.user
+.DS_Store
+*.log
+
+__pycache__/

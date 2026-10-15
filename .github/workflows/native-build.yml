@@ -1,0 +1,16 @@
+name: Native Logitech build
+# Requires a trusted macOS runner with current Logi Options+ and .NET installed.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: [self-hosted, macOS, logi-sdk]
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./repo check
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Ghostty-macOS
+          path: Ghostty_*.lplug4

@@ -1,0 +1,315 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.2">
+  <file original="$Ghostty___main" source-language="en-US" target-language="en-US" datatype="plaintext">
+    <body>
+      <group id="@commands">
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.OpenSettingsCommand" translate="yes">
+          <source>Open Settings</source>
+          <target state="translated">Open Settings</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.OpenSettingsCommand###description" translate="yes">
+          <source>Open Ghostty configuration in the default editor</source>
+          <target state="translated">Open Ghostty configuration in the default editor</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.ReloadSettingsCommand" translate="yes">
+          <source>Reload Settings</source>
+          <target state="translated">Reload Settings</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.ReloadSettingsCommand###description" translate="yes">
+          <source>Reload Ghostty configuration from disk</source>
+          <target state="translated">Reload Ghostty configuration from disk</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.SplitLeftCommand" translate="yes">
+          <source>Split Left</source>
+          <target state="translated">Split Left</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.SplitLeftCommand###description" translate="yes">
+          <source>Create a split to the left</source>
+          <target state="translated">Create a split to the left</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.SplitRightCommand" translate="yes">
+          <source>Split Right</source>
+          <target state="translated">Split Right</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.SplitRightCommand###description" translate="yes">
+          <source>Create a split to the right</source>
+          <target state="translated">Create a split to the right</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.SplitUpCommand" translate="yes">
+          <source>Split Up</source>
+          <target state="translated">Split Up</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.SplitUpCommand###description" translate="yes">
+          <source>Create a split above</source>
+          <target state="translated">Create a split above</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.SplitDownCommand" translate="yes">
+          <source>Split Down</source>
+          <target state="translated">Split Down</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.SplitDownCommand###description" translate="yes">
+          <source>Create a split below</source>
+          <target state="translated">Create a split below</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.NewTabCommand" translate="yes">
+          <source>New Tab</source>
+          <target state="translated">New Tab</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.NewTabCommand###description" translate="yes">
+          <source>Open a new Ghostty tab</source>
+          <target state="translated">Open a new Ghostty tab</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.NewWindowCommand" translate="yes">
+          <source>New Window</source>
+          <target state="translated">New Window</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.NewWindowCommand###description" translate="yes">
+          <source>Open a new Ghostty window</source>
+          <target state="translated">Open a new Ghostty window</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.FocusSplitLeftCommand" translate="yes">
+          <source>Focus Split Left</source>
+          <target state="translated">Focus Split Left</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.FocusSplitLeftCommand###description" translate="yes">
+          <source>Focus Split Left in the focused Ghostty terminal</source>
+          <target state="translated">Focus Split Left in the focused Ghostty terminal</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.FocusSplitRightCommand" translate="yes">
+          <source>Focus Split Right</source>
+          <target state="translated">Focus Split Right</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.FocusSplitRightCommand###description" translate="yes">
+          <source>Focus Split Right in the focused Ghostty terminal</source>
+          <target state="translated">Focus Split Right in the focused Ghostty terminal</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.FocusSplitUpCommand" translate="yes">
+          <source>Focus Split Up</source>
+          <target state="translated">Focus Split Up</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.FocusSplitUpCommand###description" translate="yes">
+          <source>Focus Split Up in the focused Ghostty terminal</source>
+          <target state="translated">Focus Split Up in the focused Ghostty terminal</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.FocusSplitDownCommand" translate="yes">
+          <source>Focus Split Down</source>
+          <target state="translated">Focus Split Down</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.FocusSplitDownCommand###description" translate="yes">
+          <source>Focus Split Down in the focused Ghostty terminal</source>
+          <target state="translated">Focus Split Down in the focused Ghostty terminal</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.ToggleSplitZoomCommand" translate="yes">
+          <source>Toggle Split Zoom</source>
+          <target state="translated">Toggle Split Zoom</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.ToggleSplitZoomCommand###description" translate="yes">
+          <source>Toggle Split Zoom in the focused Ghostty terminal</source>
+          <target state="translated">Toggle Split Zoom in the focused Ghostty terminal</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.EqualizeSplitsCommand" translate="yes">
+          <source>Equalize Splits</source>
+          <target state="translated">Equalize Splits</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.EqualizeSplitsCommand###description" translate="yes">
+          <source>Equalize Splits in the focused Ghostty terminal</source>
+          <target state="translated">Equalize Splits in the focused Ghostty terminal</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.PreviousTabCommand" translate="yes">
+          <source>Previous Tab</source>
+          <target state="translated">Previous Tab</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.PreviousTabCommand###description" translate="yes">
+          <source>Previous Tab in the focused Ghostty terminal</source>
+          <target state="translated">Previous Tab in the focused Ghostty terminal</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.NextTabCommand" translate="yes">
+          <source>Next Tab</source>
+          <target state="translated">Next Tab</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.NextTabCommand###description" translate="yes">
+          <source>Next Tab in the focused Ghostty terminal</source>
+          <target state="translated">Next Tab in the focused Ghostty terminal</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.PreviousWindowCommand" translate="yes">
+          <source>Previous Window</source>
+          <target state="translated">Previous Window</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.PreviousWindowCommand###description" translate="yes">
+          <source>Previous Window in the focused Ghostty terminal</source>
+          <target state="translated">Previous Window in the focused Ghostty terminal</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.NextWindowCommand" translate="yes">
+          <source>Next Window</source>
+          <target state="translated">Next Window</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.NextWindowCommand###description" translate="yes">
+          <source>Next Window in the focused Ghostty terminal</source>
+          <target state="translated">Next Window in the focused Ghostty terminal</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.IncreaseFontSizeCommand" translate="yes">
+          <source>Increase Font Size</source>
+          <target state="translated">Increase Font Size</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.IncreaseFontSizeCommand###description" translate="yes">
+          <source>Increase terminal font size by 1 point</source>
+          <target state="translated">Increase terminal font size by 1 point</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.DecreaseFontSizeCommand" translate="yes">
+          <source>Decrease Font Size</source>
+          <target state="translated">Decrease Font Size</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.DecreaseFontSizeCommand###description" translate="yes">
+          <source>Decrease terminal font size by 1 point</source>
+          <target state="translated">Decrease terminal font size by 1 point</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.ResetFontSizeCommand" translate="yes">
+          <source>Reset Font Size</source>
+          <target state="translated">Reset Font Size</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.ResetFontSizeCommand###description" translate="yes">
+          <source>Restore the configured terminal font size</source>
+          <target state="translated">Restore the configured terminal font size</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.FindCommand" translate="yes">
+          <source>Find</source>
+          <target state="translated">Find</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.FindCommand###description" translate="yes">
+          <source>Open terminal search</source>
+          <target state="translated">Open terminal search</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.FindSelectionCommand" translate="yes">
+          <source>Find Selection</source>
+          <target state="translated">Find Selection</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.FindSelectionCommand###description" translate="yes">
+          <source>Search terminal output for the selected text</source>
+          <target state="translated">Search terminal output for the selected text</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.NextSearchResultCommand" translate="yes">
+          <source>Next Search Result</source>
+          <target state="translated">Next Search Result</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.NextSearchResultCommand###description" translate="yes">
+          <source>Next Search Result in the focused Ghostty terminal</source>
+          <target state="translated">Next Search Result in the focused Ghostty terminal</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.PreviousSearchResultCommand" translate="yes">
+          <source>Previous Search Result</source>
+          <target state="translated">Previous Search Result</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.PreviousSearchResultCommand###description" translate="yes">
+          <source>Previous Search Result in the focused Ghostty terminal</source>
+          <target state="translated">Previous Search Result in the focused Ghostty terminal</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.OpenScrollbackInEditorCommand" translate="yes">
+          <source>Open Scrollback in Editor</source>
+          <target state="translated">Open Scrollback in Editor</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.OpenScrollbackInEditorCommand###description" translate="yes">
+          <source>Open terminal scrollback in the default text editor</source>
+          <target state="translated">Open terminal scrollback in the default text editor</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.ToggleSecureKeyboardEntryCommand" translate="yes">
+          <source>Toggle Secure Keyboard Entry</source>
+          <target state="translated">Toggle Secure Keyboard Entry</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.ToggleSecureKeyboardEntryCommand###description" translate="yes">
+          <source>Toggle the persistent secure keyboard entry setting for all Ghostty windows</source>
+          <target state="translated">Toggle the persistent secure keyboard entry setting for all Ghostty windows</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.CopyCommand" translate="yes">
+          <source>Copy</source>
+          <target state="translated">Copy</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.CopyCommand###description" translate="yes">
+          <source>Copy selected text in multiple clipboard formats</source>
+          <target state="translated">Copy selected text in multiple clipboard formats</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.CopyPlainTextCommand" translate="yes">
+          <source>Copy as Plain Text</source>
+          <target state="translated">Copy as Plain Text</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.CopyPlainTextCommand###description" translate="yes">
+          <source>Copy selected text without formatting</source>
+          <target state="translated">Copy selected text without formatting</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.CopyHtmlCommand" translate="yes">
+          <source>Copy as HTML</source>
+          <target state="translated">Copy as HTML</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.CopyHtmlCommand###description" translate="yes">
+          <source>Copy selected text with HTML formatting</source>
+          <target state="translated">Copy selected text with HTML formatting</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.CopyTerminalFormattingCommand" translate="yes">
+          <source>Copy with Terminal Formatting</source>
+          <target state="translated">Copy with Terminal Formatting</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.CopyTerminalFormattingCommand###description" translate="yes">
+          <source>Copy selected text with terminal escape sequences</source>
+          <target state="translated">Copy selected text with terminal escape sequences</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.CopyUrlCommand" translate="yes">
+          <source>Copy URL</source>
+          <target state="translated">Copy URL</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.CopyUrlCommand###description" translate="yes">
+          <source>Copy the URL under the terminal pointer</source>
+          <target state="translated">Copy the URL under the terminal pointer</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.CopyTerminalTitleCommand" translate="yes">
+          <source>Copy Terminal Title</source>
+          <target state="translated">Copy Terminal Title</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.CopyTerminalTitleCommand###description" translate="yes">
+          <source>Copy the title of the focused terminal</source>
+          <target state="translated">Copy the title of the focused terminal</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.PasteCommand" translate="yes">
+          <source>Paste</source>
+          <target state="translated">Paste</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.PasteCommand###description" translate="yes">
+          <source>Paste from the system clipboard using Ghostty paste handling</source>
+          <target state="translated">Paste from the system clipboard using Ghostty paste handling</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.PasteSelectionCommand" translate="yes">
+          <source>Paste from Selection</source>
+          <target state="translated">Paste from Selection</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___Loupedeck.GhosttyPlugin.PasteSelectionCommand###description" translate="yes">
+          <source>Paste from Ghostty selection clipboard</source>
+          <target state="translated">Paste from Ghostty selection clipboard</target>
+        </trans-unit>
+      </group>
+      <group id="@groups">
+        <trans-unit id="$Ghostty___GroupName___44063AC974DF77A40008" translate="yes">
+          <source>Settings</source>
+          <target state="translated">Settings</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___GroupName___WindowManagement" translate="yes">
+          <source>Window Management</source>
+          <target state="translated">Window Management</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___GroupName___Appearance" translate="yes">
+          <source>Appearance</source>
+          <target state="translated">Appearance</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___GroupName___Search" translate="yes">
+          <source>Search</source>
+          <target state="translated">Search</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___GroupName___Terminal" translate="yes">
+          <source>Terminal</source>
+          <target state="translated">Terminal</target>
+        </trans-unit>
+        <trans-unit id="$Ghostty___GroupName___Clipboard" translate="yes">
+          <source>Clipboard</source>
+          <target state="translated">Clipboard</target>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "openai.chatgpt",
+    "ms-dotnettools.csdevkit",
+    "ms-dotnettools.csharp",
+    "ms-dotnettools.vscode-dotnet-runtime",
+    "logi-sw.logiactions",
+    "EditorConfig.EditorConfig",
+    "redhat.vscode-yaml",
+    "github.vscode-github-actions",
+    "github.vscode-pull-request-github"
+  ]
+}

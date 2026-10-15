@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")"
+if ! command -v dotnet >/dev/null 2>&1 && [[ -x "$HOME/.dotnet/dotnet" ]]; then
+  export PATH="$HOME/.dotnet:$PATH"
+fi
+dotnet tool restore >/dev/null
+if [[ -z "${PluginApiDir:-}" && ! -f /Applications/Utilities/LogiPluginService.app/Contents/MonoBundle/PluginApi.dll ]]; then
+  package_cache="$(dotnet nuget locals global-packages --list)"
+  package_cache="${package_cache#*: }"
+  tool_version="$(sed -n '/"logiplugintool"/,/}/s/.*"version": *"\([^"]*\)".*/\1/p' .config/dotnet-tools.json)"
+  export PluginApiDir="${package_cache%/}/logiplugintool/$tool_version/tools/net8.0/any"
+fi
+exec dotnet run --project tools/Repo -- "$@"

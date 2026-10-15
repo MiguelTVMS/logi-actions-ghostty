@@ -1,0 +1,24 @@
+{
+  "dotnet.defaultSolution": "GhosttyPlugin.sln",
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "[csharp]": {
+    "editor.defaultFormatter": "ms-dotnettools.csharp",
+    "editor.tabSize": 4
+  },
+  "search.exclude": {
+    "**/bin": true,
+    "**/obj": true,
+    "**/artifacts": true
+  },
+  "terminal.integrated.env.osx": {
+    "PATH": "${env:HOME}/.dotnet:${env:PATH}"
+  },
+  "cSpell.words": [
+    "Ghostty",
+    "Loupedeck"
+  ]
+}
