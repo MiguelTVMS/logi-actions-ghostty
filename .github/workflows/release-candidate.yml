@@ -39,7 +39,7 @@ jobs:
             refs/heads/release/?*) ;;
             *) echo 'Dispatch this workflow from a release/* branch.' >&2; exit 1 ;;
           esac
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.ref_name }}
           fetch-depth: 0
