@@ -8,9 +8,20 @@ jobs:
   build:
     runs-on: [self-hosted, macOS, logi-sdk]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: |
+            8.x
+            10.x
+          dotnet-quality: ga
+          cache: true
+          cache-dependency-path: |
+            **/packages.lock.json
+            .config/dotnet-tools.json
+            global.json
       - run: ./repo check
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: Ghostty-macOS
           path: Ghostty_*.lplug4

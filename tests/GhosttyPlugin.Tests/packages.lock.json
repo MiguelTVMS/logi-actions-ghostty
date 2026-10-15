@@ -4,13 +4,13 @@
     "net10.0": {
       "coverlet.msbuild": {
         "type": "Direct",
-        "requested": "[10.1.0, )",
+        "requested": "[10.*, )",
         "resolved": "10.1.0",
         "contentHash": "iozrXeTbc3mBGSi+2UUL+VVbLzAJZRogo42Zq+rLQL3QiIdXoRtEWmK/BR5HvoYEo2Pam0vjHZwIVTUVmF3zrA=="
       },
       "Microsoft.NET.Test.Sdk": {
         "type": "Direct",
-        "requested": "[18.11.0, )",
+        "requested": "[18.*, )",
         "resolved": "18.11.0",
         "contentHash": "xf/bR0LNkhK0SnadDRlZIQmC4sac5Wk0e1WAdiQjRN3MSo6gQ9M2c4c1XRNnVGjfOvckh704W5CJ19AL0/Xsdg==",
         "dependencies": {
@@ -20,7 +20,7 @@
       },
       "xunit": {
         "type": "Direct",
-        "requested": "[2.9.3, )",
+        "requested": "[2.*, )",
         "resolved": "2.9.3",
         "contentHash": "TlXQBinK35LpOPKHAqbLY4xlEen9TBafjs0V5KnA4wZsoQLQJiirCR4CbIXvOH8NzkW4YeJKP5P/Bnrodm0h9Q==",
         "dependencies": {
@@ -31,7 +31,7 @@
       },
       "xunit.runner.visualstudio": {
         "type": "Direct",
-        "requested": "[4.0.1, )",
+        "requested": "[4.*, )",
         "resolved": "4.0.1",
         "contentHash": "8CoAaZkniVekR1ycJyxn+hOz+6ZQCDPcoIsIs6ujd4WyFcBMlxGNU15Qb8Uxd4iO4UmOuETb0M6vzBbwX/mfLA=="
       },

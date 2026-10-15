@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   release:
-    name: Validate, build and release macOS plugin
+    name: Validate, build and release plugin
     runs-on: macos-latest
     timeout-minutes: 30
     permissions:
@@ -37,18 +37,24 @@ jobs:
           set -euo pipefail
           case "$GITHUB_REF" in
             refs/heads/release/?*) ;;
-            *) echo 'Dispatch this workflow from a release/* branch.' >&2; exit 1 ;;
+            *) echo '::error::Choose a release/* branch in Run workflow. Create it from develop first; dispatching from develop does not publish a release.'; exit 1 ;;
           esac
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.ref_name }}
           fetch-depth: 0
           token: ${{ secrets.RELEASE_TOKEN || github.token }}
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
-            8.0.x
-            10.0.x
+            8.x
+            10.x
+          dotnet-quality: ga
+          cache: true
+          cache-dependency-path: |
+            **/packages.lock.json
+            .config/dotnet-tools.json
+            global.json
       - name: Pin the dispatch commit and prepare version
         id: version
         shell: bash
@@ -91,7 +97,7 @@ jobs:
           test -s "$PACKAGE"
           shasum -a 256 "$PACKAGE" > "$PACKAGE.sha256"
       - name: Upload validated build
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Ghostty-${{ steps.version.outputs.tag }}-macOS
           path: |
@@ -129,7 +135,7 @@ jobs:
             --verify-tag --generate-notes --title "Ghostty Actions $RELEASE_TAG" --latest
       - name: Upload validation diagnostics
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: release-validation-${{ github.run_id }}
           path: artifacts/coverage/

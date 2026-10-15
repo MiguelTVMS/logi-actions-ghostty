@@ -12,24 +12,36 @@ jobs:
     name: Quality gate
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
-            8.0.x
-            10.0.x
+            8.x
+            10.x
+          dotnet-quality: ga
+          cache: true
+          cache-dependency-path: |
+            **/packages.lock.json
+            .config/dotnet-tools.json
+            global.json
       - name: Validate Gitflow PR route
         if: github.event_name == 'pull_request'
         env:
           BASE_BRANCH: ${{ github.base_ref }}
           HEAD_BRANCH: ${{ github.head_ref }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}
         run: |
+          if [[ "$BASE_BRANCH" == develop && "$HEAD_BRANCH" == dependabot/* &&
+                "$PR_AUTHOR" == 'dependabot[bot]' && "$HEAD_REPOSITORY" == "$GITHUB_REPOSITORY" ]]; then
+            exit 0
+          fi
           case "$BASE_BRANCH:$HEAD_BRANCH" in
             develop:feature/*|develop:release/*|develop:hotfix/*|main:release/*|main:hotfix/*) ;;
             *) echo 'PR does not follow the Gitflow branch policy'; exit 1 ;;
           esac
       - run: ./repo check
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: quality-results
