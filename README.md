@@ -2,6 +2,22 @@
 
 MIT-licensed C# Logi Actions SDK plugin for Ghostty, targeting macOS and Logitech Actions Ring / compatible MX devices.
 
+## Examples
+
+Ghostty actions in the Logitech Actions Ring on macOS.
+
+**Split Left** from the window management actions:
+
+![Ghostty Actions Ring with Split Left highlighted](assets/screenshots/actions-ring-split-left.png)
+
+**Copy as Plain Text** from the clipboard actions:
+
+![Ghostty Actions Ring with Copy as Plain Text highlighted](assets/screenshots/actions-ring-copy-plain-text.png)
+
+**Find Selection** from the search actions:
+
+![Ghostty Actions Ring with Find Selection highlighted](assets/screenshots/actions-ring-find-selection.png)
+
 ## Actions
 
 Settings actions appear under **Settings**:
